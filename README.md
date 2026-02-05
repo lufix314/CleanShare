@@ -11,7 +11,7 @@ CleanShare strips tracking parameters from URLs shared from social media platfor
 | **Instagram**  | `igsh`, `igshid`, `utm_*`, `fbclid`                             |
 | **Spotify**    | `si`, `sp_cid`, `utm_*`, `go`, `dl_branch`                      |
 | **TikTok**     | `_t`, `_r`, `ttclid`, `sec_uid`, `u_code`, `utm_*`              |
-| **YouTube**    | `si`, `pp`, `feature`, `utm_*` (preserves `v`, `t`, `list`)     |
+| **YouTube**    | `si`, `pp`, `feature`, `utm_*`                                  |
 | **Twitter/X**  | `t`, `s`, `ref_src`, `utm_*`                                    |
 | **Facebook**   | `fbclid`, `mibextid`, `eav`, `__tn__`, `ref`, `paipv`, `utm_*`  |
 | **Reddit**     | `share_id`, `utm_*`, `ref`, `fbclid`, `gclid`                   |
@@ -50,3 +50,7 @@ yourplatform: {
     name: 'Your Platform'
 }
 ```
+
+## Disclaimer
+
+The list of parameters to remove are based on documentation from the platform, public articles and/or personal experience. The information might be outdated or incomplete. Please open an issue or PR if you find that tracking parameters are not removed properly.
