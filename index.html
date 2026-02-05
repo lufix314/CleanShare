@@ -18,8 +18,8 @@
     <div class="page-container">
       <div class="content-wrapper">
         <header>
-          <h1 class="hero-title">CleanShare</h1>
-          <p class="hero-subtitle">
+          <h1 class="title">CleanShare</h1>
+          <p class="subtitle">
             Remove tracking from social media share links
           </p>
         </header>
@@ -46,36 +46,94 @@
             </div>
 
             <div id="result" class="result">
-              <div id="resultContent" class="result-card"></div>
+              <div id="resultContent" class="result-card">
+                <!-- Cleaned URL Template -->
+                <div id="templateCleaned" class="result-template hidden">
+                  <div class="result-section">
+                    <div class="result-header">
+                      <h3 class="result-title" id="cleanedPlatform"></h3>
+                      <span class="result-status success">Cleaned</span>
+                    </div>
+                    <div class="result-section">
+                      <p class="result-label">Removed parameters</p>
+                      <p class="result-value" id="cleanedParams"></p>
+                    </div>
+                    <div class="result-section">
+                      <p class="result-label">Clean URL</p>
+                      <div class="code-box" id="cleanedUrl"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Platform Not Recognized Template -->
+                <div id="templateNotRecognized" class="result-template hidden">
+                  <div class="not-recognized">
+                    <h3 class="not-recognized-title">
+                      Platform not recognized
+                    </h3>
+                    <p class="not-recognized-description">
+                      This URL does not match a known supported platform.
+                    </p>
+                    <div class="info-box">
+                      <p class="info-box-title">CleanShare will:</p>
+                      <ul class="info-list">
+                        <li>
+                          Remove standard tracking parameters (utm_*, gclid,
+                          fbclid, etc.)
+                        </li>
+                        <li>Preserve affiliate and promotional parameters</li>
+                        <li>May miss platform-specific tracking</li>
+                      </ul>
+                    </div>
+                    <button id="cleanAnywayBtn" class="button-primary">
+                      Clean Anyway
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Invalid URL Template -->
+                <div id="templateInvalid" class="result-template hidden">
+                  <div class="error-message">
+                    <p id="errorMessage"></p>
+                  </div>
+                </div>
+
+                <!-- Invalid Input Template -->
+                <div id="templateInvalidInput" class="result-template hidden">
+                  <div class="error-message">
+                    <p>Please enter a valid URL</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           <div class="platforms-section">
             <h2 class="platforms-title">Supported Platforms</h2>
             <div class="platforms-list">
-              <span class="platform-name">Instagram</span>
-              <span class="platform-separator">•</span>
-              <span class="platform-name">Spotify</span>
-              <span class="platform-separator">•</span>
-              <span class="platform-name">TikTok</span>
-              <span class="platform-separator">•</span>
-              <span class="platform-name">YouTube</span>
-              <span class="platform-separator">•</span>
-              <span class="platform-name">Twitter/X</span>
-              <span class="platform-separator">•</span>
-              <span class="platform-name">Facebook</span>
-              <span class="platform-separator">•</span>
-              <span class="platform-name">Reddit</span>
-              <span class="platform-separator">•</span>
-              <span class="platform-name">LinkedIn</span>
-              <span class="platform-separator">•</span>
-              <span class="platform-name">Pinterest</span>
-              <span class="platform-separator">•</span>
-              <span class="platform-name">Twitch</span>
-              <span class="platform-separator">•</span>
-              <span class="platform-name">SoundCloud</span>
-              <span class="platform-separator">•</span>
-              <span class="platform-name">Vimeo</span>
+              <span>Instagram</span>
+              <span>•</span>
+              <span>Spotify</span>
+              <span>•</span>
+              <span>TikTok</span>
+              <span>•</span>
+              <span>YouTube</span>
+              <span>•</span>
+              <span>Twitter/X</span>
+              <span>•</span>
+              <span>Facebook</span>
+              <span>•</span>
+              <span>Reddit</span>
+              <span>•</span>
+              <span>LinkedIn</span>
+              <span>•</span>
+              <span>Pinterest</span>
+              <span>•</span>
+              <span>Twitch</span>
+              <span>•</span>
+              <span>SoundCloud</span>
+              <span>•</span>
+              <span>Vimeo</span>
             </div>
           </div>
         </main>

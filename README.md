@@ -25,7 +25,7 @@ CleanShare strips tracking parameters from URLs shared from social media platfor
 
 ### TikTok Short Links
 
-TikTok short links (`vm.tiktok.com`) embed tracking in server-side redirects inaccessible to static client-side applications.
+TikTok short links (`vm.tiktok.com`) embed tracking in server-side redirects.
 
 **Workaround:**
 
@@ -35,7 +35,7 @@ TikTok short links (`vm.tiktok.com`) embed tracking in server-side redirects ina
 
 ### Unknown Platforms
 
-Unsupported URLs undergo standard tracking parameter removal (`utm_*`, `gclid`, `fbclid`, ...) while preserving affiliate and promotional parameters. Platform-specific tracking may remain undetected.
+Unsupported URLs undergo standard tracking parameter removal (`utm_*`, `gclid`, `fbclid`, ...). Platform-specific tracking may remain undetected.
 
 ## Adding a New Platform
 

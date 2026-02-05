@@ -149,81 +149,68 @@ function cleanGenericUrl(url) {
   };
 }
 
+function hideAllTemplates() {
+  const templates = document.querySelectorAll(".result-template");
+  templates.forEach((template) => {
+    template.classList.remove("visible");
+  });
+}
+
+function showTemplate(templateId) {
+  hideAllTemplates();
+  const template = document.getElementById(templateId);
+  if (template) {
+    template.classList.add("visible");
+  }
+}
+
 function displayResult(original, result) {
   const resultDiv = document.getElementById("result");
-  const resultContent = document.getElementById("resultContent");
 
   if (result.cleaned && result.platform) {
-    const removedText =
-      result.removedParams.length > 0
-        ? `<span class="highlight">${result.removedParams.join(", ")}</span>`
-        : '<span class="muted">None</span>';
+    showTemplate("templateCleaned");
 
-    resultContent.innerHTML = `
-            <div class="result-section">
-                <div class="result-header">
-                    <h3 class="result-title">${result.platform}</h3>
-                    <span class="result-status success">Cleaned</span>
-                </div>
-                <div class="result-section">
-                    <p class="result-label">Removed parameters</p>
-                    <p class="result-value">${removedText}</p>
-                </div>
-                <div class="result-section">
-                    <p class="result-label">Clean URL</p>
-                    <div class="code-box">${escapeHtml(result.cleaned)}</div>
-                </div>
-            </div>
-        `;
+    const cleanedPlatform = document.getElementById("cleanedPlatform");
+    const cleanedParams = document.getElementById("cleanedParams");
+    const cleanedUrl = document.getElementById("cleanedUrl");
+
+    if (cleanedPlatform) cleanedPlatform.textContent = result.platform;
+
+    if (cleanedParams) {
+      if (result.removedParams.length > 0) {
+        const highlightSpan = document.createElement("span");
+        highlightSpan.className = "highlight";
+        highlightSpan.textContent = result.removedParams.join(", ");
+        cleanedParams.textContent = "";
+        cleanedParams.appendChild(highlightSpan);
+      } else {
+        const mutedSpan = document.createElement("span");
+        mutedSpan.className = "muted";
+        mutedSpan.textContent = "None";
+        cleanedParams.textContent = "";
+        cleanedParams.appendChild(mutedSpan);
+      }
+    }
+
+    if (cleanedUrl) {
+      cleanedUrl.textContent = result.cleaned;
+    }
+
     resultDiv.classList.add("visible");
     updateCopyButton(true);
     return;
   }
 
   if (!result.platform && isValidUrl(original)) {
-    resultContent.innerHTML = `
-            <div class="not-recognized">
-                <h3 class="not-recognized-title">Platform not recognized</h3>
-                <p class="not-recognized-description">This URL does not match a known supported platform.</p>
-                <div class="info-box">
-                    <p class="info-box-title">CleanShare will:</p>
-                    <ul class="info-list">
-                        <li>Remove standard tracking parameters (utm_*, gclid, fbclid, etc.)</li>
-                        <li>Preserve affiliate and promotional parameters</li>
-                        <li>May miss platform-specific tracking</li>
-                    </ul>
-                </div>
-                <button
-                    id="cleanAnywayBtn"
-                    class="button-primary"
-                >
-                    Clean Anyway
-                </button>
-            </div>
-        `;
+    showTemplate("templateNotRecognized");
     resultDiv.classList.add("visible");
     document.getElementById("copyBtn").disabled = true;
-
-    document.getElementById("cleanAnywayBtn").addEventListener("click", () => {
-      const result = cleanGenericUrl(original);
-      displayResult(original, result);
-    });
     return;
   }
 
-  resultContent.innerHTML = `
-        <div class="error-message">
-            <p>Please enter a valid URL</p>
-        </div>
-    `;
+  showTemplate("templateInvalidInput");
   resultDiv.classList.add("visible");
   updateCopyButton(false);
-}
-
-function escapeHtml(text) {
-  const div = document.createElement("div");
-  div.textContent = text;
-  return div.innerHTML;
 }
 
 function copyToClipboard(text) {
@@ -261,6 +248,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  document
+    .getElementById("cleanAnywayBtn")
+    .addEventListener("click", () => {
+      const url = urlInput.value.trim();
+      if (!url) return;
+
+      try {
+        const result = cleanGenericUrl(url);
+        displayResult(url, result);
+      } catch (error) {
+        const resultDiv = document.getElementById("result");
+        const errorMessage = document.getElementById("errorMessage");
+
+        showTemplate("templateInvalid");
+
+        if (errorMessage) {
+          errorMessage.textContent = "Invalid URL: " + error.message;
+        }
+
+        resultDiv.classList.add("visible");
+        updateCopyButton(false);
+      }
+    });
+
   cleanBtn.addEventListener("click", () => {
     const url = urlInput.value.trim();
     if (!url) return;
@@ -270,13 +281,14 @@ document.addEventListener("DOMContentLoaded", () => {
       displayResult(url, result);
     } catch (error) {
       const resultDiv = document.getElementById("result");
-      const resultContent = document.getElementById("resultContent");
+      const errorMessage = document.getElementById("errorMessage");
 
-      resultContent.innerHTML = `
-            <div class="error-message">
-                <p>Invalid URL: ${escapeHtml(error.message)}</p>
-            </div>
-        `;
+      showTemplate("templateInvalid");
+
+      if (errorMessage) {
+        errorMessage.textContent = "Invalid URL: " + error.message;
+      }
+
       resultDiv.classList.add("visible");
       updateCopyButton(false);
     }
