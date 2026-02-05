@@ -29,18 +29,6 @@ const PLATFORM_TRACKING = [
   "ttclid",
 ];
 
-const AFFILIATE_PARAMS = [
-  "aff",
-  "affiliate",
-  "aff_id",
-  "affiliate_id",
-  "partner",
-  "tag",
-  "promo",
-  "coupon",
-  "discount",
-];
-
 function isValidUrl(string) {
   try {
     new URL(string);
@@ -48,11 +36,6 @@ function isValidUrl(string) {
   } catch (_) {
     return false;
   }
-}
-
-function isAffiliateOrPromotional(param) {
-  const lowerParam = param.toLowerCase();
-  return AFFILIATE_PARAMS.some((aff) => lowerParam.startsWith(aff));
 }
 
 function detectPlatform(url) {
@@ -74,36 +57,30 @@ function detectPlatform(url) {
 
 function getParamsToRemove(urlObj, platform) {
   const searchParams = urlObj.searchParams;
-  const removedParams = [];
-  const paramsToKeep = new Set();
 
-  if (platform.rules.removeAll) {
-    for (const param of searchParams.keys()) {
-      removedParams.push(param);
-    }
-    return { removedParams, paramsToKeep };
-  }
+  let removedParams = Array.from(
+    platform.rules.removeAll
+      ? searchParams.keys()
+      : searchParams
+          .keys()
+          .filter(
+            (param) =>
+              (platform.rules.removeSelected &&
+                platform.rules.removeSelected.includes(param)) ||
+              UTM_PARAMS.includes(param) ||
+              PLATFORM_TRACKING.includes(param),
+          ),
+  );
 
-  for (const param of searchParams.keys()) {
-    const shouldRemove =
-      (platform.rules.removeSelected &&
-        platform.rules.removeSelected.includes(param)) ||
-      UTM_PARAMS.includes(param) ||
-      PLATFORM_TRACKING.includes(param);
+  removedParams = removedParams.filter(
+    (param) =>
+      !(
+        platform.rules.keepSelected &&
+        platform.rules.keepSelected.includes(param)
+      ),
+  );
 
-    const shouldKeep =
-      (platform.rules.keepSelected &&
-        platform.rules.keepSelected.includes(param)) ||
-      isAffiliateOrPromotional(param);
-
-    if (shouldKeep) {
-      paramsToKeep.add(param);
-    } else if (shouldRemove) {
-      removedParams.push(param);
-    }
-  }
-
-  return { removedParams, paramsToKeep };
+  return removedParams;
 }
 
 function cleanUrl(url) {
@@ -118,7 +95,7 @@ function cleanUrl(url) {
     };
   }
 
-  const { removedParams } = getParamsToRemove(urlObj, platform);
+  const removedParams = getParamsToRemove(urlObj, platform);
 
   removedParams.forEach((param) => {
     urlObj.searchParams.delete(param);
@@ -248,29 +225,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  document
-    .getElementById("cleanAnywayBtn")
-    .addEventListener("click", () => {
-      const url = urlInput.value.trim();
-      if (!url) return;
+  document.getElementById("cleanAnywayBtn").addEventListener("click", () => {
+    const url = urlInput.value.trim();
+    if (!url) return;
 
-      try {
-        const result = cleanGenericUrl(url);
-        displayResult(url, result);
-      } catch (error) {
-        const resultDiv = document.getElementById("result");
-        const errorMessage = document.getElementById("errorMessage");
+    try {
+      const result = cleanGenericUrl(url);
+      displayResult(url, result);
+    } catch (error) {
+      const resultDiv = document.getElementById("result");
+      const errorMessage = document.getElementById("errorMessage");
 
-        showTemplate("templateInvalid");
+      showTemplate("templateInvalid");
 
-        if (errorMessage) {
-          errorMessage.textContent = "Invalid URL: " + error.message;
-        }
-
-        resultDiv.classList.add("visible");
-        updateCopyButton(false);
+      if (errorMessage) {
+        errorMessage.textContent = "Invalid URL: " + error.message;
       }
-    });
+
+      resultDiv.classList.add("visible");
+      updateCopyButton(false);
+    }
+  });
 
   cleanBtn.addEventListener("click", () => {
     const url = urlInput.value.trim();
