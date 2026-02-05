@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="CleanShare - Remove user tracking from social media share links. Clean links from Instagram, Spotify, TikTok, YouTube, Twitter, Facebook, Reddit, LinkedIn and more."
+    />
+    <meta
+      name="keywords"
+      content="link cleaner, privacy, tracking removal, social media, Instagram, Spotify, TikTok, YouTube, Twitter, Facebook, Reddit, LinkedIn"
+    />
+    <title>CleanShare</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="page-container">
+      <div class="content-wrapper">
+        <header>
+          <h1 class="hero-title">CleanShare</h1>
+          <p class="hero-subtitle">
+            Remove tracking from social media share links
+          </p>
+        </header>
+
+        <main>
+          <div class="card">
+            <div class="form-group">
+              <label for="urlInput" class="input-label">Paste URL</label>
+              <input
+                type="url"
+                id="urlInput"
+                class="url-input"
+                placeholder="https://www.instagram.com/p/ABC123..."
+              />
+            </div>
+
+            <div class="button-group">
+              <button id="cleanBtn" class="button-primary" disabled>
+                Clean Link
+              </button>
+              <button id="copyBtn" class="button-secondary" disabled>
+                Copy URL
+              </button>
+            </div>
+
+            <div id="result" class="result">
+              <div id="resultContent" class="result-card"></div>
+            </div>
+          </div>
+
+          <div class="platforms-section">
+            <h2 class="platforms-title">Supported Platforms</h2>
+            <div class="platforms-list">
+              <span class="platform-name">Instagram</span>
+              <span class="platform-separator">•</span>
+              <span class="platform-name">Spotify</span>
+              <span class="platform-separator">•</span>
+              <span class="platform-name">TikTok</span>
+              <span class="platform-separator">•</span>
+              <span class="platform-name">YouTube</span>
+              <span class="platform-separator">•</span>
+              <span class="platform-name">Twitter/X</span>
+              <span class="platform-separator">•</span>
+              <span class="platform-name">Facebook</span>
+              <span class="platform-separator">•</span>
+              <span class="platform-name">Reddit</span>
+              <span class="platform-separator">•</span>
+              <span class="platform-name">LinkedIn</span>
+              <span class="platform-separator">•</span>
+              <span class="platform-name">Pinterest</span>
+              <span class="platform-separator">•</span>
+              <span class="platform-name">Twitch</span>
+              <span class="platform-separator">•</span>
+              <span class="platform-name">SoundCloud</span>
+              <span class="platform-separator">•</span>
+              <span class="platform-name">Vimeo</span>
+            </div>
+          </div>
+        </main>
+      </div>
+
+      <footer>
+        <div class="footer-content">
+          <p>100% client-side • No data is sent to any server</p>
+        </div>
+      </footer>
+    </div>
+
+    <div id="toast" class="toast">Copied to clipboard</div>
+
+    <script src="platformRules.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
